@@ -5,6 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HelperMethods {
+
+    public static Movie editTitle (Movie movie) throws ClassNotFoundException, SQLException {
+        int idCorrect = movie.getIndex();
+        String titleNew = movie.getTitle();
+        Class.forName("org.sqlite.JDBC");
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");
+        Statement stmt = connection.createStatement();
+        String updateSql = "UPDATE movies SET title= '"+titleNew+"'  WHERE id="+idCorrect+";";
+        System.out.println(updateSql);
+        stmt.executeUpdate(updateSql);
+        String selectSql = "SELECT * FROM movies WHERE title= '"+titleNew+"';";
+        ResultSet rs = stmt.executeQuery(selectSql);;
+        movie.setTitle(rs.getString("title"));
+        return movie;
+    }
+
     public static List<Movie> getAllGenre (String genre) throws ClassNotFoundException, SQLException {
         List<Movie> getAllGenre = new ArrayList<>();
         Class.forName("org.sqlite.JDBC");
@@ -23,6 +39,8 @@ public class HelperMethods {
             Movie movie = new Movie(id, title, year, description, genre);
             getAllGenre.add(movie);
         }
+        stmt.close();
+        connection.close();
         return getAllGenre;
     }
 
@@ -44,6 +62,8 @@ public class HelperMethods {
             Movie movie = new Movie(id, title, year, description, genre);
             getAllYear.add(movie);
         }
+        stmt.close();
+        connection.close();
         return getAllYear;
     }
 
@@ -61,6 +81,8 @@ public class HelperMethods {
         String genre = rs.getString("genre");
         boolean isRented = rs.getBoolean("isRented");
         Movie movie = new Movie(id, title, year, description, genre);
+        stmt.close();
+        connection.close();
         return movie;
     }
 
@@ -82,6 +104,8 @@ public class HelperMethods {
             Movie movie = new Movie(id, title, year, description, genre);
             allNamesLike.add(movie);
         }
+        stmt.close();
+        connection.close();
         return allNamesLike;
     }
 
@@ -131,6 +155,8 @@ public class HelperMethods {
             Movie movie = new Movie(id, title, year, description, genre);
             currentMovies.add(movie);
         }
+        stmt.close();
+        connection.close();
 
 
         return currentMovies;

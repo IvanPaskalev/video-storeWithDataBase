@@ -95,14 +95,34 @@ public class Main {
                             } catch (ClassNotFoundException | SQLException e) {
                                 e.printStackTrace();
                             }
-
-                            //----------------------------------
                             break;
                     }
                     break;
                 case 3:
                     System.out.println("Enter Title");
                     String title = new Scanner(System.in).nextLine();
+                    try {
+                        Movie movieToCorrect = HelperMethods.getMovie(title);
+                        System.out.println("------------------------");
+                        System.out.println("Result:");
+                        System.out.println(movieToCorrect);
+                        System.out.println("------------------------");
+                        System.out.println("1 - edit title\n2 - edit year\n3 - edit genre\n4 - edit \"isRented\"");
+                        switch (new Scanner(System.in).nextInt()){
+                            case 1:
+                                System.out.println("Enter new title and press Enter");
+                                movieToCorrect.setTitle(new Scanner(System.in).nextLine());
+                                Movie movieCorrected = HelperMethods.editTitle(movieToCorrect);
+                                System.out.println("-----------------------");
+                                System.out.println("Result:");
+                                System.out.println(movieCorrected);
+                                System.out.println("-----------------------");
+                                break;
+                        }
+                    } catch (ClassNotFoundException | SQLException e) {
+                        e.printStackTrace();
+                    }
+
                     //----------------------------------------------
                     break;
 
