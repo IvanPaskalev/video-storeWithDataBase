@@ -8,7 +8,13 @@ public class Movie {
     private String description;
     boolean isRented;
 
-    public Movie() {
+    public Movie(int id, String title, int year, String description, String genre) {
+        this.index = id;
+        this.title = title;
+        this.year = year;
+        this.genre = genre;
+        this.description = "Enter description";
+        this.isRented = isRented();
     }
 
     public Movie(int index, String title, int year, String genre) {
@@ -18,6 +24,9 @@ public class Movie {
         this.genre = genre;
         this.description = "Enter description";
         this.isRented = isRented();
+    }
+
+    public Movie() {
     }
 
     public int getIndex() {

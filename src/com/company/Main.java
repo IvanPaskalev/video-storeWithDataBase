@@ -62,9 +62,8 @@ public class Main {
                                     String title2 = new Scanner(System.in).nextLine();
                                     try {
                                         List<Movie> resultAllNamesLike = HelperMethods.getAllNamesLike(title2);
-                                        for (int i = 0; i < resultAllNamesLike.size(); i++) {
-                                            System.out.println(resultAllNamesLike.get(i));
-                                            break;
+                                        for (Movie movie : resultAllNamesLike) {
+                                            System.out.println(movie);
                                         }
                                     } catch (ClassNotFoundException | SQLException e) {
                                         e.printStackTrace();
@@ -74,13 +73,29 @@ public class Main {
                             }
                             break;
                         case 2:
-                            System.out.println("Enter year");
+                            System.out.println("Enter year and press Enter");
                             int year = new Scanner(System.in).nextInt();
-                            //---------------------------
+                            try {
+                                List<Movie> getAllYear = HelperMethods.getAllYear(year);
+                                for (Movie movie : getAllYear) {
+                                    System.out.println(movie);
+                                }
+                            } catch (ClassNotFoundException | SQLException e) {
+                                e.printStackTrace();
+                            }
                             break;
                         case 3:
                             System.out.println("Enter genre");
                             String genre = new Scanner(System.in).nextLine();
+                            try {
+                                List<Movie> getAllGenre = HelperMethods.getAllGenre(genre);
+                                for (Movie movie : getAllGenre) {
+                                    System.out.println(movie);
+                                }
+                            } catch (ClassNotFoundException | SQLException e) {
+                                e.printStackTrace();
+                            }
+
                             //----------------------------------
                             break;
                     }
@@ -92,10 +107,6 @@ public class Main {
                     break;
 
                 case 4:
-                    List<Movie> allMovies = getAllMovies();
-                    for (Movie movie1: allMovies) {
-                        System.out.println(movie1);
-                    }
                     break;
                 case 5:
                     isQuiting = true;
@@ -148,19 +159,5 @@ public class Main {
         return movie;
     }
 
-
-    private static List<Movie> getAllMovies() {
-        List<String> lines;
-        List<Movie> movies = new ArrayList<>();
-        try {
-            lines = Files.readAllLines(Paths.get("dataBase.txt"));
-            for (String line : lines) {
-                String[] info = line.split(" ");
-                movies.add(new Movie(Integer.parseInt(info[0]), info[1].replaceAll("_!_", " "), Integer.parseInt(info[2].trim()), info[3]));
-            }
-        } catch (IOException e) {
-        }
-        return movies;
-    }
 
 }

@@ -5,6 +5,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HelperMethods {
+    public static List<Movie> getAllGenre (String genre) throws ClassNotFoundException, SQLException {
+        List<Movie> getAllGenre = new ArrayList<>();
+        Class.forName("org.sqlite.JDBC");
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");
+        Statement stmt = connection.createStatement();
+        String getSql = "SELECT * FROM movies WHERE genre LIKE '%"+genre+"%';";
+        ResultSet rs = stmt.executeQuery(getSql);
+
+        while (rs.next()){
+            int id = rs.getInt("id");
+            String title = rs.getString("title");
+            int year  = rs.getInt("year");
+            String  description = rs.getString("description");
+            genre = rs.getString("genre");
+            boolean isRented = rs.getBoolean("isRented");
+            Movie movie = new Movie(id, title, year, description, genre);
+            getAllGenre.add(movie);
+        }
+        return getAllGenre;
+    }
+
+    public static List<Movie> getAllYear (int year) throws ClassNotFoundException, SQLException {
+        List<Movie> getAllYear = new ArrayList<>();
+        Class.forName("org.sqlite.JDBC");
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");
+        Statement stmt = connection.createStatement();
+        String getSql = "SELECT * FROM movies WHERE year LIKE "+year+";";
+        ResultSet rs = stmt.executeQuery(getSql);
+
+        while (rs.next()){
+            int id = rs.getInt("id");
+            String title = rs.getString("title");
+            year  = rs.getInt("year");
+            String  description = rs.getString("description");
+            String genre = rs.getString("genre");
+            boolean isRented = rs.getBoolean("isRented");
+            Movie movie = new Movie(id, title, year, description, genre);
+            getAllYear.add(movie);
+        }
+        return getAllYear;
+    }
+
     public static Movie getMovie (String title) throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
         Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");
@@ -16,8 +58,9 @@ public class HelperMethods {
         title = rs.getString("title");
         int year  = rs.getInt("year");
         String  description = rs.getString("description");
+        String genre = rs.getString("genre");
         boolean isRented = rs.getBoolean("isRented");
-        Movie movie = new Movie(id, title, year, description);
+        Movie movie = new Movie(id, title, year, description, genre);
         return movie;
     }
 
@@ -34,8 +77,9 @@ public class HelperMethods {
             title = rs.getString("title");
             int year  = rs.getInt("year");
             String  description = rs.getString("description");
+            String genre = rs.getString("genre");
             boolean isRented = rs.getBoolean("isRented");
-            Movie movie = new Movie(id, title, year, description);
+            Movie movie = new Movie(id, title, year, description, genre);
             allNamesLike.add(movie);
         }
         return allNamesLike;
@@ -82,8 +126,9 @@ public class HelperMethods {
             String  title = rs.getString("title");
             int year  = rs.getInt("year");
             String  description = rs.getString("description");
+            String genre = rs.getString("genre");
             boolean isRented = rs.getBoolean("isRented");
-            Movie movie = new Movie(id, title, year, description);
+            Movie movie = new Movie(id, title, year, description, genre);
             currentMovies.add(movie);
         }
 
