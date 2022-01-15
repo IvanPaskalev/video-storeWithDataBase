@@ -222,8 +222,44 @@ public class Main {
                     switch (new Scanner(System.in).nextInt()){
                         case 1:
                             System.out.println("Enter movie title");
+                            String titleToDelete = new Scanner(System.in).nextLine();
+                            try {
+                                Movie movieToDelete = HelperMethods.getMovie(titleToDelete);
+                                System.out.println("Result:");
+                                System.out.println(movieToDelete);
+                                System.out.println("Do you want to delete the movie?");
+                                System.out.println("1 - Delete movie\n2 - Cancel");
+                                switch (new Scanner(System.in).nextInt()){
+                                    case 1:
+                                        try {
+                                            String movieDeleted = HelperMethods.deleteOneMovie(movieToDelete);
+                                            System.out.println(movieDeleted);
+                                        } catch (ClassNotFoundException | SQLException e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
+                                    case 2:
+                                        break;
+                                }
+                            } catch (ClassNotFoundException | SQLException e) {
+                                e.printStackTrace();
+                            }
                             break;
                         case 2:
+                            System.out.println("1 - Delete all movies\n2 - Cancel");
+                            switch (new Scanner(System.in).nextInt()){
+                                case 1:
+                                    String allMoviesDeleted = null;
+                                    try {
+                                        allMoviesDeleted = HelperMethods.deleteAllMovies();
+                                        System.out.println(allMoviesDeleted);
+                                    } catch (ClassNotFoundException | SQLException e) {
+                                        e.printStackTrace();
+                                    }
+                                    break;
+                                case 2:
+                                    break;
+                            }
                             break;
                     }
                     break;

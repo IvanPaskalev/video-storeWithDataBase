@@ -6,6 +6,31 @@ import java.util.List;
 
 public class HelperMethods {
 
+    public static String deleteAllMovies () throws ClassNotFoundException, SQLException {
+        Class.forName("org.sqlite.JDBC");
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");
+        Statement stmt = connection.createStatement();
+        String updateSql = "DELETE * FROM movies;";
+        stmt.executeUpdate(updateSql);
+        String allMoviesDeleted = "All movies are deleted!\nData Base is empty.";
+        stmt.close();
+        connection.close();
+        return allMoviesDeleted;
+    }
+
+    public static String deleteOneMovie(Movie movie) throws ClassNotFoundException, SQLException {
+        String deleteOneMovie = movie.getTitle();
+        Class.forName("org.sqlite.JDBC");
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");
+        Statement stmt = connection.createStatement();
+        String updateSql = "DELETE FROM movies WHERE title='"+deleteOneMovie+"';";
+        stmt.executeUpdate(updateSql);
+        deleteOneMovie = "Movie deleted!";
+        stmt.close();
+        connection.close();
+        return deleteOneMovie;
+    }
+
     public static Movie editIsRentedFalse (Movie movie) throws ClassNotFoundException, SQLException {
         int idToCorrect = movie.getIndex();
         boolean isRentedNew = false;
