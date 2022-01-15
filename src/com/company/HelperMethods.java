@@ -6,18 +6,100 @@ import java.util.List;
 
 public class HelperMethods {
 
-    public static Movie editTitle (Movie movie) throws ClassNotFoundException, SQLException {
-        int idCorrect = movie.getIndex();
+    public static Movie editIsRentedFalse (Movie movie) throws ClassNotFoundException, SQLException {
+        int idToCorrect = movie.getIndex();
+        boolean isRentedNew = false;
+        Class.forName("org.sqlite.JDBC");
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");
+        Statement stmt = connection.createStatement();
+        String updateSql = "UPDATE movies SET isRented = "+isRentedNew+" WHERE id="+idToCorrect+";";
+        stmt.executeUpdate(updateSql);
+        String selectSql = "SELECT * FROM movies WHERE id= "+idToCorrect+";";
+        ResultSet rs = stmt.executeQuery(selectSql);
+        movie.setRented(rs.getBoolean("isRented"));
+        stmt.close();
+        connection.close();
+        return movie;
+    }
+
+    public static Movie editIsRentedTrue (Movie movie) throws ClassNotFoundException, SQLException {
+        int idToCorrect = movie.getIndex();
+        boolean isRentedNew = true;
+        Class.forName("org.sqlite.JDBC");
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");
+        Statement stmt = connection.createStatement();
+        String updateSql = "UPDATE movies SET isRented = "+isRentedNew+" WHERE id="+idToCorrect+";";
+        stmt.executeUpdate(updateSql);
+        String selectSql = "SELECT * FROM movies WHERE id= "+idToCorrect+";";
+        ResultSet rs = stmt.executeQuery(selectSql);
+        movie.setRented(rs.getBoolean("isRented"));
+        stmt.close();
+        connection.close();
+        return movie;
+    }
+
+    public static Movie editDescription (Movie movie) throws ClassNotFoundException, SQLException {
+        int idToCorrect = movie.getIndex();
+        String descriptionNew = movie.getDescription();
+        Class.forName("org.sqlite.JDBC");
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");
+        Statement stmt = connection.createStatement();
+        String updateSql = "UPDATE movies SET description= '"+descriptionNew+"'  WHERE id="+idToCorrect+";";
+        stmt.executeUpdate(updateSql);
+        String selectSql = "SELECT * FROM movies WHERE id= "+idToCorrect+";";
+        ResultSet rs = stmt.executeQuery(selectSql);
+        movie.setDescription(rs.getString("description"));
+        stmt.close();
+        connection.close();
+        return movie;
+    }
+
+    public static Movie editGenre (Movie movie) throws ClassNotFoundException, SQLException {
+        int idToCorrect = movie.getIndex();
+        String genreNew = movie.getGenre();
+        Class.forName("org.sqlite.JDBC");
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");
+        Statement stmt = connection.createStatement();
+        String updateSql = "UPDATE movies SET genre= '"+genreNew+"'  WHERE id="+idToCorrect+";";
+        stmt.executeUpdate(updateSql);
+        String selectSql = "SELECT * FROM movies WHERE id= "+idToCorrect+";";
+        ResultSet rs = stmt.executeQuery(selectSql);;
+        movie.setGenre(rs.getString("genre"));
+        stmt.close();
+        connection.close();
+        return movie;
+    }
+
+    public static Movie editYear (Movie movie) throws ClassNotFoundException, SQLException {
+        int idToCorrect = movie.getIndex();
+        int yearNew = movie.getYear();
         String titleNew = movie.getTitle();
         Class.forName("org.sqlite.JDBC");
         Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");
         Statement stmt = connection.createStatement();
-        String updateSql = "UPDATE movies SET title= '"+titleNew+"'  WHERE id="+idCorrect+";";
-        System.out.println(updateSql);
+        String updateSql = "UPDATE movies SET year= "+yearNew+"  WHERE id="+idToCorrect+";";
+        stmt.executeUpdate(updateSql);
+        String selectSql = "SELECT * FROM movies WHERE id= "+idToCorrect+";";
+        ResultSet rs = stmt.executeQuery(selectSql);;
+        movie.setYear(rs.getInt("year"));
+        stmt.close();
+        connection.close();
+        return movie;
+    }
+
+    public static Movie editTitle (Movie movie) throws ClassNotFoundException, SQLException {
+        int idToCorrect = movie.getIndex();
+        String titleNew = movie.getTitle();
+        Class.forName("org.sqlite.JDBC");
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");
+        Statement stmt = connection.createStatement();
+        String updateSql = "UPDATE movies SET title= '"+titleNew+"'  WHERE id="+idToCorrect+";";
         stmt.executeUpdate(updateSql);
         String selectSql = "SELECT * FROM movies WHERE title= '"+titleNew+"';";
         ResultSet rs = stmt.executeQuery(selectSql);;
         movie.setTitle(rs.getString("title"));
+        stmt.close();
+        connection.close();
         return movie;
     }
 
@@ -137,7 +219,7 @@ public class HelperMethods {
         return movie;
     }
 
-    public static List<Movie> getAll() throws ClassNotFoundException, SQLException {
+    public static List<Movie> getAllMovies() throws ClassNotFoundException, SQLException {
         List<Movie> currentMovies = new ArrayList<>();
         Class.forName("org.sqlite.JDBC");
         Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");

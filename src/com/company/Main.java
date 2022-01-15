@@ -13,14 +13,14 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            System.out.println("Hi!\n1 - Save new movie\n2 - search\n3 - Edit\n4 - See all movies\n5 - Exit");
+            System.out.println("Hi!\n1 - Save new movie\n2 - search\n3 - Edit\n4 - See all movies\n5 - Delete\n6 - Exit");
             boolean isQuiting = false;
             switch (new Scanner(System.in).nextInt()) {
                 case 1:
                     int id = 0;
                     List<Movie> currentMovies = null;
                     try {
-                        currentMovies = HelperMethods.getAll();
+                        currentMovies = HelperMethods.getAllMovies();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     } catch (SQLException e) {
@@ -107,16 +107,96 @@ public class Main {
                         System.out.println("Result:");
                         System.out.println(movieToCorrect);
                         System.out.println("------------------------");
-                        System.out.println("1 - edit title\n2 - edit year\n3 - edit genre\n4 - edit \"isRented\"");
+                        System.out.println("1 - edit title\n2 - edit year\n3 - edit genre\n4 - add description\n5 - edit \"isRented\"");
                         switch (new Scanner(System.in).nextInt()){
-                            case 1:
+                            case 1://edit title
+                                System.out.println("Current title:");
+                                System.out.println(movieToCorrect.getTitle());
                                 System.out.println("Enter new title and press Enter");
-                                movieToCorrect.setTitle(new Scanner(System.in).nextLine());
-                                Movie movieCorrected = HelperMethods.editTitle(movieToCorrect);
-                                System.out.println("-----------------------");
-                                System.out.println("Result:");
-                                System.out.println(movieCorrected);
-                                System.out.println("-----------------------");
+                                try {
+                                    movieToCorrect.setTitle(new Scanner(System.in).nextLine());
+                                    Movie movieCorrectedTitle = HelperMethods.editTitle(movieToCorrect);
+                                    System.out.println("-----------------------");
+                                    System.out.println("Result:");
+                                    System.out.println(movieCorrectedTitle);
+                                    System.out.println("-----------------------");
+                                } catch (ClassNotFoundException | SQLException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                            case 2://edit year
+                                System.out.println("Current year:");
+                                System.out.println(movieToCorrect.getYear());
+                                System.out.println("Enter new year and press Enter");
+                                try {
+                                    movieToCorrect.setYear(new Scanner(System.in).nextInt());
+                                    Movie movieCorrectedYear = HelperMethods.editYear(movieToCorrect);
+                                    System.out.println("-----------------------");
+                                    System.out.println("Result:");
+                                    System.out.println(movieCorrectedYear);
+                                    System.out.println("-----------------------");
+                                } catch (ClassNotFoundException | SQLException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                            case 3://edit genre
+                                System.out.println("Current genre:");
+                                System.out.println(movieToCorrect.getGenre());
+                                System.out.println("Enter new genre and press Enter");
+                                try {
+                                    movieToCorrect.setGenre(new Scanner(System.in).nextLine());
+                                    Movie movieCorrectedGenre = HelperMethods.editGenre(movieToCorrect);
+                                    System.out.println("-----------------------");
+                                    System.out.println("Result:");
+                                    System.out.println(movieCorrectedGenre);
+                                    System.out.println("-----------------------");
+                                } catch (ClassNotFoundException | SQLException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                            case 4://edit description
+                                System.out.println("Current description:");
+                                System.out.println(movieToCorrect.getDescription());
+                                System.out.println("Enter new description and press Enter");
+                                try {
+                                    movieToCorrect.setDescription(new Scanner(System.in).nextLine());
+                                    Movie movieCorrectedDescription = HelperMethods.editDescription(movieToCorrect);
+                                    System.out.println("-----------------------");
+                                    System.out.println("Result:");
+                                    System.out.println(movieCorrectedDescription);
+                                    System.out.println("-----------------------");
+                                } catch (ClassNotFoundException | SQLException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                            case 5://edit isRented - must go again, Why boolean in database is 1?
+                                System.out.println("Current \"isRented\" = "+movieToCorrect.isRented()+"");
+                                System.out.println("1 - Change status \"isRented\" to \"true\"");
+                                System.out.println("2 - Change status \"isRented\" to \"false\"");
+                                switch (new Scanner(System.in).nextInt()){
+                                    case 1:
+                                        try {
+                                            Movie movieIsRented = HelperMethods.editIsRentedTrue(movieToCorrect);
+                                            System.out.println("-----------------------");
+                                            System.out.println("Result:");
+                                            System.out.println(movieIsRented);
+                                            System.out.println("-----------------------");
+                                        } catch (ClassNotFoundException | SQLException e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
+                                    case 2:
+                                        try {
+                                            Movie movieIsNotRented = HelperMethods.editIsRentedFalse(movieToCorrect);
+                                            System.out.println("-----------------------");
+                                            System.out.println("Result:");
+                                            System.out.println(movieIsNotRented);
+                                            System.out.println("-----------------------");
+                                        } catch (ClassNotFoundException | SQLException e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
+                                }
                                 break;
                         }
                     } catch (ClassNotFoundException | SQLException e) {
@@ -127,8 +207,27 @@ public class Main {
                     break;
 
                 case 4:
+                    try {
+                        List<Movie> allMovies = HelperMethods.getAllMovies();
+                        System.out.println("Results:");
+                        for (Movie movie : allMovies) {
+                            System.out.println(movie);
+                        }
+                    } catch (SQLException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     break;
-                case 5:
+                case 5://delete
+                    System.out.println("1 - Delete one movie\n2 - delete all movies");
+                    switch (new Scanner(System.in).nextInt()){
+                        case 1:
+                            System.out.println("Enter movie title");
+                            break;
+                        case 2:
+                            break;
+                    }
+                    break;
+                case 6:
                     isQuiting = true;
                     break;
             }

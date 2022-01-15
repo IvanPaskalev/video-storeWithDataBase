@@ -13,7 +13,7 @@ public class Movie {
         this.title = title;
         this.year = year;
         this.genre = genre;
-        this.description = "Enter description";
+        this.description = description;
         this.isRented = isRented();
     }
 
