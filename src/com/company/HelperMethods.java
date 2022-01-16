@@ -10,8 +10,10 @@ public class HelperMethods {
         Class.forName("org.sqlite.JDBC");
         Connection connection = DriverManager.getConnection("jdbc:sqlite:movies.db");
         Statement stmt = connection.createStatement();
-        String updateSql = "DELETE * FROM movies;";
+        String updateSql = "DELETE FROM movies;";
         stmt.executeUpdate(updateSql);
+        String update2Sql = "VACUUM";
+        stmt.executeUpdate(update2Sql);
         String allMoviesDeleted = "All movies are deleted!\nData Base is empty.";
         stmt.close();
         connection.close();
